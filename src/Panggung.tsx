@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { SLIDE, TOTAL_DURASI, TOTAL_SLIDE } from './data/narasi.ts';
 import { href, useHash, useSlideAwal } from './router.ts';
+import { Cover } from './slides/Cover.tsx';
 import { Landasan } from './slides/Landasan.tsx';
-import { SlideAkhir, SlideAwal } from './slides/SalinanDashboard.tsx';
-import { Detail } from './slides/Detail.tsx';
+import { Penutup } from './slides/Penutup.tsx';
 import { Strategi } from './slides/Strategi.tsx';
 
 /**
@@ -65,7 +65,6 @@ export function Panggung() {
         if (i === sekarang) return;
         sekarang = i;
         setKini(i);
-        slide[i]?.dispatchEvent(new Event('pg-tampil'));
         titik.forEach((t, k) => { if (k === i) t.setAttribute('aria-current', 'step'); else t.removeAttribute('aria-current'); });
         if (noEl) noEl.textContent = `${i + 1} / ${slide.length}`;
         // Alamat diperbarui setelah gulir berhenti; replaceState berulang tiap slide membebani Safari.
@@ -191,11 +190,10 @@ export function Panggung() {
   return (
     <div className={`panggung paksa-terang pg-gulir${catatan ? ' pg-catatan' : ''}`} ref={akar}>
       <main className="pg-stage">
-        <SlideAwal />
+        <Cover />
         <Landasan />
         <Strategi />
-        <Detail />
-        <SlideAkhir />
+        <Penutup />
 
         <footer className="pg-foot">
           <nav className="pg-nav" aria-label="Navigasi slide">

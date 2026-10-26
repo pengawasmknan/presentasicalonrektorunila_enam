@@ -110,8 +110,6 @@ button { cursor: pointer; }
 .px-glow { position: absolute; left: 59.4%; top: 8.2%; width: 45.6%; height: 80%; background: radial-gradient(closest-side, rgba(30, 144, 255, 0.4), rgba(30, 144, 255, 0.12) 55%, transparent 100%); }
 .px-anna-jas { left: 61.7%; top: 3.9%; width: 41%; height: 96%; object-fit: contain; object-position: bottom; }
 .px-judul { left: 8.9%; top: 19.5%; width: 63.3%; font-size: 4.64cqw; line-height: 1.14; letter-spacing: -0.026em !important; color: #1e90ff; }
-.px-sub { left: 8.9%; top: 39%; width: 58.2%; font-size: 2.04cqw; line-height: 1.28; color: #1e90ff; font-family: 'Inter', var(--font); font-weight: 700 !important; }
-.px-slogan { left: 8.9%; top: 55.1%; width: 39.7%; font-size: 3.47cqw; line-height: 1.2; font-style: italic; letter-spacing: 0.05em !important; color: #0a6ad6; }
 .px-garis { position: absolute; left: 8.9%; top: 68%; width: 5.9%; height: 0.37%; background: #1e90ff; }
 .px-nama { left: 8.9%; top: 69.4%; width: 58.8%; font-size: 2.35cqw; line-height: 1.2; color: #1e90ff; font-family: 'Inter', var(--font); font-weight: 700 !important; }
 .px-jabatan { left: 8.9%; top: 75.3%; width: 58.8%; font-size: 1.53cqw; line-height: 1.3; color: #1e90ff; font-family: 'Inter', var(--font); font-weight: 600 !important; }

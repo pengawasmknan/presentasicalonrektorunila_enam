@@ -1,5 +1,5 @@
 /**
- * Cadangan PDF: lima slide, satu halaman 16:9 (1920x1080) per slide, teks tetap teks.
+ * Cadangan PDF: empat slide, satu halaman 16:9 (1920x1080) per slide, teks tetap teks.
  * Slide dibuka dalam mode tanpa gerak (semua animasi mati, angka di nilai akhir), dock disembunyikan.
  * Setelah dibuat, PDF dibuka lagi dengan pdf.js: jumlah halaman, teks yang bisa dicari, dan kemiripan tiap halaman
  * dengan potret webnya diperiksa (shots/pdf-*.png).
@@ -59,10 +59,10 @@ await p2.close();
 
 let semuaLulus = true;
 const lapor = (ok, t) => { if (!ok) semuaLulus = false; console.log(`${ok ? 'LULUS' : 'GAGAL'}  ${t}`); };
-lapor(info.n === 5, `PDF berisi ${info.n} halaman`);
+lapor(info.n === 4, `PDF berisi ${info.n} halaman`);
 // pdf.js memecah teks berjarak huruf negatif per glyph, jadi spasi diabaikan saat mencocokkan.
-const kunci = ['Ekosistem Hilirisasi Inovasi', 'Masa bakti', 'Empat misi', 'Langkah dan angka kunci'];
-kunci.forEach((k, i) => lapor((info.halaman[i]?.teks.replace(/\s+/g, '') ?? '').includes(k.replace(/\s+/g, '')), `halaman ${i + 1} memuat teks yang bisa dicari: "${k}"`));
+const kunci = ['Impactful for Leading', 'Dari Peta Besar RPJP', 'Tiga Belas Program Unggulan', 'Impactful'];
+kunci.forEach((k, i) => lapor((info.halaman[i]?.teks.replace(/\s+/g, '') ?? '').toLowerCase().includes(k.replace(/\s+/g, '').toLowerCase()), `halaman ${i + 1} memuat teks yang bisa dicari: "${k}"`));
 lapor(info.halaman.every((h) => Math.abs(h.lebar / h.tinggi - 16 / 9) < 0.01), 'semua halaman 16:9');
 for (let i = 0; i < info.halaman.length; i++) {
   const png = Buffer.from(info.halaman[i].png.split(',')[1], 'base64');

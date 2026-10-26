@@ -1,10 +1,11 @@
-import { MISI, PROGRAM, STRATEGI } from '../data/narasi.ts';
+import { PROGRAM, STRATEGI } from '../data/narasi.ts';
 import { PetaAlir } from '../components/PetaAlir.tsx';
 import { ital } from '../lib/ital.tsx';
-import { kapital, terbilang } from '../lib/terbilang.ts';
+import { Bingkai } from '../components/Bingkai.tsx';
+import { judulKapital, terbilang } from '../lib/terbilang.ts';
 
 export function Strategi() {
-  const judul = `${kapital(terbilang(MISI.length))} misi, ${terbilang(STRATEGI.length)} strategi, ${terbilang(PROGRAM.length)} program unggulan`;
+  const judul = judulKapital(`${terbilang(STRATEGI.length)} strategi dan ${terbilang(PROGRAM.length)} program unggulan`).replace(' Dan ', ' dan ');
   return (
     <section className="pg-slide pg-slide-isi" aria-label="Strategi dan program unggulan">
       <div className="pg-isi">
@@ -30,6 +31,7 @@ export function Strategi() {
         </div>
         <p className="st-petunjuk" aria-hidden="true">Klik simpul untuk menyorot jalur</p>
       </div>
+      <Bingkai />
     </section>
   );
 }

@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "Mode Panggung debat Bakal Calon Rektor Universitas Lampung 2027–2031: 5 slide, layar penuh.",
+  "description": "Mode Panggung debat Bakal Calon Rektor Universitas Lampung 2027–2031: 4 slide, layar penuh.",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

@@ -25,17 +25,9 @@ export interface AngkaKunci {
   sumber: string;
 }
 
-export interface KartuDetail {
-  strategi: IdStrategi;
-  angka?: { besar: string; label: string };
-  kalimat?: string;
-  poin: string[];
-  chip?: string[];
-}
-
 export interface InfoSlide {
   no: number;
-  kunci: 'cover' | 'landasan' | 'strategi' | 'detail' | 'penutup';
+  kunci: 'cover' | 'landasan' | 'strategi' | 'penutup';
   judul: string;
   durasi: number;
   catatan: string;

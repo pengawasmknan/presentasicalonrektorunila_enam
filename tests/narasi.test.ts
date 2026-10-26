@@ -1,17 +1,16 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ANGKA, GURU_BESAR, KARTU, MISI, PROGRAM, PUSAT_PENELITIAN, RPJP, SLIDE, STRATEGI, TAGLINE, TOTAL_DURASI, TUGAS_REKTOR, VISI, persenGuruBesar } from '../src/data/narasi.ts';
-import { terbilang } from '../src/lib/terbilang.ts';
+import { ANGKA, GURU_BESAR, MISI, PROGRAM, PUSAT_PENELITIAN, RPJP, SLIDE, STRATEGI, TAGLINE, TOTAL_DURASI, VISI, VISI_PENDEK, persenGuruBesar, visiBesar2045 } from '../src/data/narasi.ts';
+import { judulKapital, terbilang } from '../src/lib/terbilang.ts';
 
 const semuaTeks = (): string[] => [
-  VISI, TAGLINE, TUGAS_REKTOR,
+  VISI, VISI_PENDEK, TAGLINE, visiBesar2045.awal, visiBesar2045.sisa,
   ...RPJP.flatMap((t) => [t.tahun, t.nama]),
   ...MISI.map((m) => m.nama),
   ...STRATEGI.map((s) => s.nama),
   ...PROGRAM.flatMap((p) => [p.label, p.penuh]),
   ...PUSAT_PENELITIAN,
   ...ANGKA.flatMap((a) => [a.label, a.keterangan]),
-  ...KARTU.flatMap((k) => [k.angka?.besar ?? '', k.angka?.label ?? '', k.kalimat ?? '', ...k.poin, ...(k.chip ?? [])]),
   ...SLIDE.flatMap((s) => [s.judul, s.catatan]),
 ];
 
@@ -57,11 +56,16 @@ describe('angka kunci', () => {
       expect(s.catatan).not.toMatch(/16\s+program/);
     }
     expect(SLIDE[2]!.catatan).toMatch(/13 program unggulan/);
-    expect(SLIDE[3]!.catatan).toMatch(/650 miliar/);
+    expect(SLIDE[2]!.catatan).toMatch(/650 miliar/);
+    expect(SLIDE[2]!.catatan).toMatch(/Rp650 M/);
   });
-  it('slide tidak menampilkan angka kondisi saat ini', () => {
-    const tampil = KARTU.flatMap((k) => [k.angka?.besar ?? '', k.kalimat ?? '', ...k.poin]).join(' ');
-    expect(tampil).not.toMatch(/1\.418|11,7|36%|UKT/);
+  it('angka kunci ada di catatan slide 3, bukan di slide', () => {
+    const c = SLIDE[2]!.catatan;
+    expect(c).toMatch(/36%/);
+    expect(c).toMatch(/166 dari 1\.418 dosen \(11,7%\)/);
+    expect(c).toMatch(/Rp35 M/);
+    expect(c).toMatch(/10% dari PAGU/);
+    for (const k of PUSAT_PENELITIAN) expect(c).toContain(k);
   });
 });
 
@@ -71,20 +75,48 @@ describe('teks', () => {
     const dir = new URL('../src/slides/', import.meta.url);
     for (const f of readdirSync(dir)) expect(readFileSync(new URL(f, dir), 'utf8'), f).not.toContain('—');
   });
-  it('tanpa nomor urut calon', () => {
-    for (const t of semuaTeks()) expect(t.toLowerCase()).not.toMatch(/nomor urut/);
+  it('tanpa nomor urut calon di teks slide (catatan PPT menyebutnya sebagai pengingat pembicara)', () => {
+    const tampil = semuaTeks().filter((t) => !SLIDE.some((s) => s.catatan === t));
+    for (const t of tampil) expect(t.toLowerCase()).not.toMatch(/nomor urut/);
+  });
+  it('label program unggulan sama dengan PPT', () => {
+    expect(PROGRAM.map((p) => `${p.id} ${p.label}`)).toEqual([
+      '01.1 Pengelolaan Anggaran dan Perencanaan Keuangan',
+      '01.2 Penerimaan Mahasiswa Baru yang Transparan',
+      '02.1 1 Dosen 1 Penelitian secara bertahap',
+      '02.2 Innovation Based University sampai Hilirisasi',
+      '02.3 Studi Lanjut dan Sertifikasi Kompetensi Tendik',
+      '02.4 Anggaran kemahasiswaan 10% PAGU, bertahap',
+      '03.1 Pusat Penelitian dari Kepakaran Dosen',
+      '04.1 Revitalisasi Bisnis Laboratorium Terpadu (LTSIT)',
+      '04.2 Optimalisasi Balai Bahasa, CCED, Puskom, Olahraga',
+      '05.1 Hilirisasi Karya dosen: Riset, Pendidikan, dan Pengabdian',
+      '06.1 Penamaan Gedung dan Jalan dari Tokoh Lampung',
+      '06.2 SDGs dan Green Metric untuk Kampus yang Nyaman',
+      '06.3 Konseling dan Pencegahan Kekerasan',
+    ]);
+  });
+  it('visi besar 2045 dan visi 2027-2031', () => {
+    expect(`${visiBesar2045.awal} ${visiBesar2045.sisa}`).toBe('Universitas Lampung Berkelas Dunia, Unggul, dan Berkelanjutan');
+    expect(visiBesar2045.sumber).toBe('PPT_DEBAT_REKTOR_PROF_ANNA_261026');
+    expect(VISI_PENDEK).toBe('Universitas Lampung sebagai Ekosistem Hilirisasi Inovasi, Berdaya Saing Dunia, Berakar pada Budaya dan Kemandirian Bangsa');
+  });
+  it('catatan slide 1 dan 4 berasal dari PPT', () => {
+    expect(SLIDE[0]!.catatan).toMatch(/^Waktu 0:30\./);
+    expect(SLIDE[3]!.catatan).toMatch(/^Waktu 1:15\./);
   });
   it('judul slide 3 ditulis dengan huruf dari jumlah data', () => {
     expect(terbilang(PROGRAM.length)).toBe('tiga belas');
     expect(terbilang(MISI.length)).toBe('empat');
     expect(terbilang(STRATEGI.length)).toBe('enam');
+    expect(judulKapital('enam strategi dan tiga belas program unggulan').replace(' Dan ', ' dan ')).toBe('Enam Strategi dan Tiga Belas Program Unggulan');
   });
 });
 
 describe('durasi', () => {
-  it('total 420 detik dengan lima slide', () => {
-    expect(SLIDE).toHaveLength(5);
-    expect(TOTAL_DURASI).toBe(420);
-    expect(SLIDE.map((s) => s.durasi)).toEqual([45, 105, 105, 120, 45]);
+  it('total 435 detik dengan empat slide', () => {
+    expect(SLIDE).toHaveLength(4);
+    expect(TOTAL_DURASI).toBe(435);
+    expect(SLIDE.map((s) => s.durasi)).toEqual([30, 105, 225, 75]);
   });
 });

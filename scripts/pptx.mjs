@@ -1,5 +1,5 @@
 /**
- * Cadangan PPTX: lima slide 16:9, masing-masing satu gambar PNG penuh (potret web 1920x1080, animasi selesai, dock
+ * Cadangan PPTX: empat slide 16:9, masing-masing satu gambar PNG penuh (potret web 1920x1080, animasi selesai, dock
  * disembunyikan) dengan catatan pembicara dari `catatan` di src/data/narasi.ts. Tidak ada teks atau gambar lain.
  * Setelah dibuat, berkas dibuka lagi (JSZip): jumlah slide, urutan, gambar sama dengan potret web, dan catatan terisi.
  */
@@ -40,7 +40,7 @@ const lapor = (ok, t) => { if (!ok) semuaLulus = false; console.log(`${ok ? 'LUL
 const zip = await JSZip.loadAsync(readFileSync(KELUAR));
 const urut = (n) => Number(n.match(/(\d+)\.xml$/)[1]);
 const slideXml = Object.keys(zip.files).filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n)).sort((a, b) => urut(a) - urut(b));
-lapor(slideXml.length === 5, `PPTX berisi ${slideXml.length} slide`);
+lapor(slideXml.length === 4, `PPTX berisi ${slideXml.length} slide`);
 const pres = await zip.file('ppt/presentation.xml').async('string');
 const sz = pres.match(/<p:sldSz cx="(\d+)" cy="(\d+)"/);
 lapor(!!sz && Math.abs(Number(sz[1]) / Number(sz[2]) - 16 / 9) < 0.01, `ukuran slide ${sz?.[1]} x ${sz?.[2]} EMU (16:9)`);
