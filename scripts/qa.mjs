@@ -1,7 +1,7 @@
 /**
  * QA otomatis (Playwright + Chrome sistem). Menyalakan server Vite sendiri; atur BASE untuk memakai server lain.
  * Memeriksa: tanpa luapan di tiap slide (1920x1080, 1440x810, 1280x720, 390x844), tanpa galat konsol, navigasi,
- * #/3, F dan Esc, sorotan jalur di slide 3, ukuran teks program unggulan, catatan pembicara.
+ * #/3, F dan Esc, sorotan jalur di slide 3, ukuran teks program unggulan, tanpa tombol Catatan.
  */
 import { writeFileSync } from 'node:fs';
 import { PROGRAM } from '../src/data/narasi.ts';
@@ -39,7 +39,7 @@ const periksaLuapan = (nomor) => {
     if (b.bottom > r.bottom + 1 || b.right > r.right + 1 || b.left < r.left - 1) keluar.push(`${e.className || e.tagName} b=${Math.round(b.bottom - r.bottom)} r=${Math.round(b.right - r.right)}`);
   });
   const terpotong = [];
-  slide.querySelectorAll('.dt-kartu, .simpul, .ld-misi li, .rpjp-tahap li').forEach((e) => {
+  slide.querySelectorAll('.simpul, .ld-misi li, .rpjp-tahap li').forEach((e) => {
     if (e.scrollHeight > e.clientHeight + 1 || e.scrollWidth > e.clientWidth + 1) terpotong.push(`${e.className} ${e.scrollHeight}/${e.clientHeight}`);
   });
   return { keluar: keluar.slice(0, 4), terpotong: terpotong.slice(0, 4) };
@@ -63,6 +63,10 @@ for (const [nama, w, h, seluler] of [['1920x1080', 1920, 1080, false], ['1440x81
       const fs = await page.evaluate(() => Math.min(...[...document.querySelectorAll('.simpul-a')].map((e) => parseFloat(getComputedStyle(e).fontSize))));
       const min = w >= 1920 ? 22 : w >= 1440 ? 16 : 15;
       cek(`teks program unggulan >= ${min}px (${nama})`, fs >= min - 0.2, `${fs.toFixed(1)}px`);
+      if (w >= 1440) {
+        const satuBaris = await page.evaluate(() => [...document.querySelectorAll('.simpul-a')].every((e) => e.lastElementChild.getBoundingClientRect().height < parseFloat(getComputedStyle(e).fontSize) * 1.6));
+        cek(`label program muat satu baris (${nama})`, satuBaris);
+      }
     }
     if (seluler && i >= 2 && i <= 3) {
       const t = await page.evaluate((nomor) => {
@@ -100,20 +104,27 @@ for (const [nama, w, h, seluler] of [['1920x1080', 1920, 1080, false], ['1440x81
   await page.waitForTimeout(600);
   const keluar = await page.evaluate(() => !document.fullscreenElement);
   cek('F masuk layar penuh dan Esc keluar', penuh && keluar, `masuk=${penuh} keluar=${keluar}`);
-  await page.keyboard.press('n');
-  await page.waitForTimeout(300);
-  const panel = await page.evaluate(() => document.querySelector('.cp-panel')?.textContent ?? '');
-  cek('N menampilkan catatan pembicara dan penghitung waktu', /Waktu 0:30/.test(panel) && /\d:\d\d/.test(panel), panel.slice(0, 60));
-  await page.keyboard.press('n');
+  cek('tidak ada tombol Catatan di web', !(await page.textContent('body')).includes('Catatan'));
   await page.close();
 
   const p3 = await buka(ctx, '#/3');
   const sebelum = await p3.evaluate(() => document.querySelectorAll('.simpul.redup').length);
-  await p3.locator('.simpul-m').first().click();
+  await p3.locator('.simpul-u').first().click();
   await p3.waitForTimeout(400);
-  const sesudah = await p3.evaluate(() => ({ redup: document.querySelectorAll('.simpul.redup').length, jalur: document.querySelectorAll('.jalur.redup').length, tekan: document.querySelector('.simpul-m[aria-pressed="true"]') !== null, dock: document.querySelector('.pg-nomor-dock')?.textContent?.trim() }));
-  cek('klik simpul misi menyorot jalur', sebelum === 0 && sesudah.redup > 0 && sesudah.jalur > 0 && sesudah.tekan, JSON.stringify(sesudah));
+  const sesudah = await p3.evaluate(() => ({ redup: document.querySelectorAll('.simpul.redup').length, jalur: document.querySelectorAll('.jalur.redup').length, tekan: document.querySelector('.simpul-u[aria-pressed="true"]') !== null, dock: document.querySelector('.pg-nomor-dock')?.textContent?.trim() }));
+  cek('klik simpul strategi menyorot jalur', sebelum === 0 && sesudah.redup > 0 && sesudah.jalur > 0 && sesudah.tekan, JSON.stringify(sesudah));
   cek('klik di diagram tidak memindahkan slide', sesudah.dock === '3 / 4', sesudah.dock);
+  cek('kolom misi tidak ditampilkan: 0 simpul misi, 6 strategi, 13 program', await p3.evaluate(() => document.querySelectorAll('.simpul-m').length === 0 && document.querySelectorAll('.simpul-u').length === 6 && document.querySelectorAll('.simpul-a').length === 13));
+  for (const [lb, lt] of [[1920, 1080], [1440, 810]]) {
+    const pv = await browser.newPage({ viewport: { width: lb, height: lt } });
+    await pv.goto(`${base}/#/3`, { waitUntil: 'load' });
+    await pv.evaluate(() => document.fonts.ready);
+    await pv.waitForTimeout(WAKTU_SLIDE);
+    const baris = await pv.evaluate(() => [...document.querySelectorAll('.simpul-a')].filter((e) => { const s = e.lastElementChild; const fs = parseFloat(getComputedStyle(s).fontSize); return s.getBoundingClientRect().height > fs * 1.6; }).map((e) => e.querySelector('.no').textContent));
+    cek(`label program satu baris di ${lb} lebar`, baris.length === 0, baris.join(' ') || 'semua satu baris');
+    await pv.close();
+  }
+  cek('garis seragam 2,5 px', await p3.evaluate(() => [...document.querySelectorAll('.jalur')].every((e) => e.getAttribute('stroke-width') === '2.5')));
   await p3.locator('.simpul-u').nth(3).click();
   await p3.waitForTimeout(300);
   const aktifA = await p3.evaluate(() => [...document.querySelectorAll('.simpul-a:not(.redup)')].length);

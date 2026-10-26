@@ -16,7 +16,6 @@ Berkas ini berisi seluruh presentasi (4 slide) dalam satu file. Tidak perlu inte
 | **F** | Layar penuh |
 | **→** atau **Spasi** | Slide berikutnya |
 | **←** | Slide sebelumnya |
-| **N** | Catatan pembicara dan waktu |
 | **?** | Daftar tombol |
 | **Esc** | Keluar dari layar penuh |
 

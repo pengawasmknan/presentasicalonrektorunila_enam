@@ -49,3 +49,19 @@ Label 02.2, 03.1, 04.1, 04.2, dan 05.1 diganti sesuai revisi (04.2 kini memuat R
 - Sumber slide 2 dan 3 dipindah ke kiri bawah dengan lebar terbatas agar tidak tertutup dock navigasi di 1920×1080.
 - Cetak (Ctrl/Cmd+P) menghasilkan 4 halaman; diuji lewat Playwright.
 - Belum diuji di Safari: Playwright WebKit tidak terpasang di mesin ini. Perlu uji manual di Safari sebelum dikirim ke penerima.
+
+## Peta alir dua kolom dan penghapusan Catatan (26 Okt 2026)
+
+- Peta alir slide 3 hanya memuat Strategi (kiri, 28% lebar) dan Program unggulan (kanan, 55%), dengan celah lengkung 7%. Kolom Misi tidak ditampilkan; field `misi` tetap di data. Garis seragam 2,5 px. Label program tetap satu baris di 1920×1080 dan 1440×810 (ukuran huruf `min(1.3vw, 2.2vh)`, 15 sampai 30 px). Sub-judul: "Setiap program unggulan melayani satu strategi."
+- Tombol "Catatan (N)", pintasan N, panel catatan pembicara, dan penghitung waktu dihapus dari web atas permintaan pemilik materi. Teks `catatan` tetap di `narasi.ts` untuk PPTX ekspor. Panduan `CARA-PAKAI.md` dan daftar tombol `?` sudah diperbarui.
+- Selisih dengan `PPT_DEBAT_REKTOR_PROF_ANNA_261026_revisi-slide3c.pptx`: di PPT strategi tidak sejajar dengan kelompok programnya (kartu rata kiri, sedikit lebih kecil); di web kartu strategi rata tinggi bagi enam baris, dan lengkung diatur ulang sesuai itu. Latar tapis PPT tidak dibawa.
+
+## Slide 3 dua kolom, tanpa catatan di web (26 Okt 2026)
+
+- Kolom Misi dihapus dari peta alir slide 3. Yang tampil: Strategi (kiri) dan Program unggulan (kanan). Lebar kolom: tepi 5%, strategi 28%, celah lengkung 7%, program 55%, tepi 5%. Garis lengkung seragam 2,5 px; klik strategi atau program menyorot jalurnya.
+- Field `misi` di `narasi.ts` tetap (data); hanya tidak ditampilkan.
+- Sub-judul: "Setiap program unggulan melayani satu strategi."
+- Label program unggulan memakai `labelTebal` (kata kunci tebal biru), dipakai di peta alir dan di tampilan sempit. Dipertahankan dari revisi sebelumnya.
+- Ukuran label program: 1,4vw (dibatasi 2,6vh). Ini ukuran terbesar yang membuat semua label tetap satu baris di 1920 dan 1440. Pada 1,5vw, label 04.2 dan 05.1 pecah.
+- Tombol "Catatan (N)", pintasan N, panel catatan, dan penghitung waktu dihapus dari tampilan web atas permintaan pemilik materi. Teks catatan tetap ada di `narasi.ts` untuk catatan PPTX ekspor; tidak ditampilkan.
+- Tombol `?` tetap menampilkan daftar tombol (tanpa N).

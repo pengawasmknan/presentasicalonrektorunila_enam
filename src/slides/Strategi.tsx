@@ -13,7 +13,7 @@ export function Strategi() {
         <header className="pg-kepala">
           <p className="pg-kicker" data-masuk>Strategi dan program unggulan</p>
           <h2 className="pg-judul lebar" data-masuk>{judul}</h2>
-          <p className="pg-sub" data-masuk>Setiap program unggulan melayani satu misi dan satu strategi.</p>
+          <p className="pg-sub" data-masuk>Setiap program unggulan melayani satu strategi.</p>
         </header>
         <div className="st-badan" data-masuk>
           <PetaAlir />

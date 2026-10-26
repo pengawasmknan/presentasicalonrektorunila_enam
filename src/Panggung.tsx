@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { SLIDE, TOTAL_DURASI, TOTAL_SLIDE } from './data/narasi.ts';
+import { TOTAL_SLIDE } from './data/narasi.ts';
 import { href, useHash, useSlideAwal } from './router.ts';
 import { Cover } from './slides/Cover.tsx';
 import { Landasan } from './slides/Landasan.tsx';
@@ -19,32 +19,14 @@ const MEDIA_PIN = '(min-width: 961px) and (min-height: 560px) and (prefers-reduc
 
 interface Tangani { ke: (i: number) => void; sekarang: () => number }
 
-const format = (detik: number): string => {
-  const a = Math.abs(Math.round(detik));
-  return `${detik < 0 ? '+' : ''}${Math.floor(a / 60)}:${String(a % 60).padStart(2, '0')}`;
-};
-
 export function Panggung() {
   const akar = useRef<HTMLDivElement | null>(null);
   const kendali = useRef<Tangani>({ ke: () => undefined, sekarang: () => 0 });
   const awal = useSlideAwal() - 1;
-  const [kini, setKini] = useState(awal);
-  const [catatan, setCatatan] = useState(false);
   const [bantuan, setBantuan] = useState(false);
-  const [mulai, setMulai] = useState<number | null>(null);
-  const [tik, setTik] = useState(0);
 
   const ke = useCallback((i: number) => kendali.current.ke(i), []);
   useHash((n) => { if (n - 1 !== kendali.current.sekarang()) kendali.current.ke(n - 1); });
-
-  // Penghitung waktu mulai saat slide 1 pertama kali digeser.
-  useEffect(() => { if (kini > 0 && mulai === null) setMulai(Date.now()); }, [kini, mulai]);
-  useEffect(() => {
-    if (mulai === null) return;
-    const t = window.setInterval(() => setTik((x) => x + 1), 500);
-    return () => window.clearInterval(t);
-  }, [mulai]);
-  void tik;
 
   // Pembersihan ScrollTrigger harus jalan sebelum React menghapus elemen (pin-spacer), jadi useLayoutEffect.
   useLayoutEffect(() => {
@@ -65,7 +47,6 @@ export function Panggung() {
       const tandai = (i: number) => {
         if (i === sekarang) return;
         sekarang = i;
-        setKini(i);
         titik.forEach((t, k) => { if (k === i) t.setAttribute('aria-current', 'step'); else t.removeAttribute('aria-current'); });
         if (noEl) noEl.textContent = `${i + 1} / ${slide.length}`;
         // Alamat diperbarui setelah gulir berhenti; replaceState berulang tiap slide membebani Safari.
@@ -200,19 +181,14 @@ export function Panggung() {
       } else if (e.key.toLowerCase() === 'f') {
         if (document.fullscreenElement) void document.exitFullscreen();
         else void document.documentElement.requestFullscreen?.();
-      } else if (e.key.toLowerCase() === 'n') {
-        setCatatan((v) => !v);
       }
     };
     window.addEventListener('keydown', f);
     return () => window.removeEventListener('keydown', f);
   }, []);
 
-  const sisa = mulai === null ? TOTAL_DURASI : TOTAL_DURASI - (Date.now() - mulai) / 1000;
-  const info = SLIDE[Math.min(N - 1, Math.max(0, kini))]!;
-
   return (
-    <div className={`panggung paksa-terang pg-gulir${catatan ? ' pg-catatan' : ''}`} ref={akar}>
+    <div className="panggung paksa-terang pg-gulir" ref={akar}>
       <main className="pg-stage">
         <Cover />
         <Landasan />
@@ -228,7 +204,6 @@ export function Panggung() {
             <button type="button" onClick={() => ke(kendali.current.sekarang() + 1)} aria-label="Slide berikutnya">→</button>
             <span className="pg-nomor-dock num" aria-live="polite">1 / {N}</span>
             <button type="button" onClick={() => (document.fullscreenElement ? void document.exitFullscreen() : void document.documentElement.requestFullscreen?.())}>Layar penuh (F)</button>
-            <button type="button" aria-pressed={catatan} onClick={() => setCatatan((v) => !v)}>Catatan (N)</button>
             <button type="button" aria-expanded={bantuan} aria-label="Bantuan: daftar tombol (?)" onClick={() => setBantuan((v) => !v)}>?</button>
           </nav>
         </footer>
@@ -242,7 +217,6 @@ export function Panggung() {
             <dt>← ↑ PageUp</dt><dd>Slide sebelumnya (atau geser ke kanan)</dd>
             <dt>Home, End</dt><dd>Slide pertama atau terakhir</dd>
             <dt>F</dt><dd>Layar penuh</dd>
-            <dt>N</dt><dd>Catatan pembicara dan penghitung waktu</dd>
             <dt>Esc</dt><dd>Keluar dari layar penuh atau tutup panel ini</dd>
             <dt>?</dt><dd>Tampilkan atau sembunyikan daftar ini</dd>
           </dl>
@@ -250,16 +224,6 @@ export function Panggung() {
         </aside>
       )}
 
-      {catatan && (
-        <aside className="cp-panel" aria-label="Catatan pembicara">
-          <div className="cp-kepala">
-            <span>Slide {info.no}: {info.judul} · sekitar {format(info.durasi)}</span>
-            <span className={`cp-waktu num${sisa < 0 ? ' lewat' : ''}`} aria-label="Sisa waktu">{format(sisa)}</span>
-            <span className="cp-aksi"><button type="button" onClick={() => setMulai(Date.now())}>Setel ulang waktu</button></span>
-          </div>
-          <p className="cp-teks">{info.catatan}</p>
-        </aside>
-      )}
     </div>
   );
 }

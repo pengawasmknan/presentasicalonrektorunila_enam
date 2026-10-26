@@ -44,6 +44,7 @@ for (const [lebar, tinggi] of [[1920, 1080], [1440, 810], [1280, 720]]) {
   cek(`semua gambar termuat (${lebar}x${tinggi})`, gambar.length > 0 && gambar.every(Boolean), `${gambar.filter(Boolean).length}/${gambar.length}`);
   const jumlah = await page.evaluate(() => document.querySelectorAll('.pg-slide').length);
   cek(`empat slide ada (${lebar}x${tinggi})`, jumlah === 4, String(jumlah));
+  cek(`tanpa tombol Catatan (${lebar}x${tinggi})`, !(await page.textContent('body')).includes('Catatan'));
 
   for (let i = 1; i <= 4; i++) {
     if (i > 1) { await page.keyboard.press('ArrowRight'); await page.waitForTimeout(2000); }
@@ -70,16 +71,12 @@ for (const [lebar, tinggi] of [[1920, 1080], [1440, 810], [1280, 720]]) {
     cek('dua panah dari slide 1 membuka slide 3', (await page.textContent('.pg-nomor-dock'))?.trim() === '3 / 4');
     const kunci = await page.evaluate(() => [...document.querySelectorAll('.simpul-a .kunci')].map((e) => getComputedStyle(e).color + ' ' + getComputedStyle(e).fontWeight));
     cek('kata kunci tebal biru pada label program (slide 3)', kunci.length > 0 && kunci.every((k) => /rgb\(30, 144, 255\) 700/.test(k)), `${kunci.length} kata kunci`);
-    await page.click('.simpul-m >> nth=0');
+    await page.click('.simpul-u >> nth=0');
     await page.waitForTimeout(400);
     const redup = await page.evaluate(() => document.querySelectorAll('.simpul.redup').length);
-    cek('klik simpul misi menyorot jalur', redup > 0, `${redup} simpul redup`);
-    await page.click('.simpul-m >> nth=0');
+    cek('klik simpul strategi menyorot jalur', redup > 0, `${redup} simpul redup`);
+    await page.click('.simpul-u >> nth=0');
     await page.waitForTimeout(300);
-    await page.keyboard.press('n');
-    await page.waitForTimeout(300);
-    cek('N membuka catatan pembicara', (await page.$('.cp-panel')) !== null);
-    await page.keyboard.press('n');
     await page.keyboard.press('?');
     await page.waitForTimeout(200);
     cek('? membuka daftar tombol', (await page.$('.bantuan')) !== null);

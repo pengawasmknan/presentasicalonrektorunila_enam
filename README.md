@@ -26,12 +26,12 @@ mkdir node_modules.nosync && ln -s node_modules.nosync node_modules && npm insta
 | ← → ↑ ↓, Spasi, PageUp, PageDown | Slide sebelumnya atau berikutnya |
 | Home, End | Slide pertama atau terakhir |
 | F | Masuk atau keluar layar penuh |
-| Esc | Keluar dari layar penuh |
-| N | Panel catatan pembicara dan penghitung waktu 7:00 |
+| ? | Daftar tombol |
+| Geser kiri/kanan (layar sentuh) | Slide berikutnya atau sebelumnya |
+| Esc | Keluar dari layar penuh atau tutup daftar tombol |
 
 Alamat `#/1` sampai `#/4` membuka slide yang sesuai. Dock navigasi di bawah muncul saat ada gerakan lalu menghilang sendiri. Di layar sempit (≤ 960 px) atau saat sistem meminta gerak dikurangi, slide ditumpuk ke bawah dan tidak memakai animasi sematan.
 
-Penghitung waktu mulai berjalan saat slide 1 pertama kali digeser dan menghitung mundur dari 7:00. Panel catatan tidak ikut tercetak ke PDF dan tidak tampil sebelum tombol N ditekan.
 
 ## Mengubah isi slide
 
@@ -39,8 +39,8 @@ Semua isi ada di [`src/data/narasi.ts`](src/data/narasi.ts):
 
 - `VISI`, `TAGLINE`, `RPJP`, `MISI`, `STRATEGI`: teks slide 1, 2, dan 3.
 - `PROGRAM`: 13 program unggulan (label pendek di diagram, kalimat narasi lengkap di `penuh`, serta misi dan strateginya).
-- `visiBesar2045`, `VISI_PENDEK`: kutipan slide 2. `ANGKA` menyimpan angka kunci beserta sumbernya; angka itu tampil hanya di catatan pembicara slide 3.
-- `SLIDE`: judul, `durasi` (detik), dan `catatan` pembicara tiap slide. Total durasi harus 435 detik. Catatan slide 1 dan 4 berasal dari catatan PPT; slide 2 dan 3 dari narasi docx.
+- `visiBesar2045`, `VISI_PENDEK`: kutipan slide 2. `ANGKA` menyimpan angka kunci beserta sumbernya; angka itu hanya tercantum di catatan pembicara slide 3.
+- `SLIDE`: judul, `durasi` (detik), dan `catatan` pembicara tiap slide (tidak ditampilkan di web; dipakai catatan PPTX ekspor). Total durasi harus 435 detik. Catatan slide 1 dan 4 berasal dari catatan PPT; slide 2 dan 3 dari narasi docx.
 
 Istilah asing dicetak miring otomatis lewat daftar di [`src/lib/ital.tsx`](src/lib/ital.tsx); tambahkan istilah baru di sana. Tampilan slide ada di `src/slides/`, gayanya di `src/styles/app.css`. Judul slide 3 dihitung dari panjang larik data, jadi menambah program unggulan otomatis mengubah "tiga belas". 
 
