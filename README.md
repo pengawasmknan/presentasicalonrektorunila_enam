@@ -69,3 +69,16 @@ Hubungkan repositori GitHub ini ke Vercel sebagai proyek Vite:
 - Output Directory: `dist`
 
 Routing memakai hash (`#/3`) dan `base: './'`, jadi tidak perlu aturan rewrite.
+
+## Berkas HTML mandiri (tanpa internet, tanpa server)
+
+```bash
+npm run html
+```
+
+Menghasilkan `cadangan/Panggung-Prof-Anna.html` (sekitar 3 MB) dan menyalinnya ke folder Balrek 2027-2031. Satu berkas itu berisi seluruh kode, gambar, dan font (Instrument Sans), sehingga bisa dibuka dengan klik dua kali dari `file://`, tanpa internet, tanpa Node, dan tanpa Vercel.
+
+- Konfigurasi terpisah: `vite.mandiri.config.ts` (memakai `vite-plugin-singlefile` yang dipatok di 2.3.3). Build Vercel (`vite.config.ts`) tidak berubah.
+- `scripts/html-mandiri.mjs` memindahkan skrip ke akhir body sebagai skrip klasik (bukan modul) dan memeriksa tidak ada rujukan berkas luar atau http(s).
+- `npm run qa:mandiri` menguji berkas itu secara offline (tanpa jaringan) di tiga ukuran layar: font, gambar, empat slide, navigasi, klik peta alir, N, ?, F, geser sentuh, cetak 4 halaman, dan tidak ada permintaan jaringan.
+- Panduan untuk pengguna akhir: `cadangan/CARA-PAKAI.md`.

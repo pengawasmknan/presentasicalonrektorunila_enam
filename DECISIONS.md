@@ -38,3 +38,14 @@ PPT ini sumber kebenaran untuk teks; web tetap berbentuk Mode Panggung. Perubaha
 ## Revisi label program unggulan (tulisan tangan Bu Anna)
 
 Label 02.2, 03.1, 04.1, 04.2, dan 05.1 diganti sesuai revisi (04.2 kini memuat RSPTN; 05.1 menyebut luaran dosen: Paten/HAKI, Jurnal, Buku, dan Pengabdian). Pemetaan misi dan strategi serta jumlah 13 tidak berubah. Rujukan font 'Be Vietnam Pro' dan 'Inter' di CSS dihapus; semua teks memakai font yang sama dengan bagian web lain. Kapitalisasi 02.1, 02.4 mengikuti PPT dan belum diseragamkan.
+
+## Berkas HTML mandiri (26 Okt 2026)
+
+- Tambahan, bukan pengganti: web Vercel dan cadangan PDF/PPTX tetap ada. Berkas `cadangan/Panggung-Prof-Anna.html` (sekitar 3 MB) dibuat lewat `npm run html`.
+- Satu berkas tanpa jaringan: semua JS (skrip klasik, bukan modul, supaya jalan dari file://), CSS, gambar, dan font ditanam. Tidak ada CDN, Google Fonts, analitik, atau service worker. Diuji offline (`npm run qa:mandiri`) di 1920×1080, 1440×810, dan 1280×720.
+- Font: Instrument Sans (paket yang sudah terpasang), latin dan latin-ext, dimuat lewat `main.tsx`. Tidak ada font baru. Ini mengubah font web juga (sebelumnya font sistem, SF di Mac), supaya tampilan sama di laptop mana pun.
+- Aset dipindah dari `public/` ke `src/assets/pptx/` agar Vite menanamnya. Ikon tab memakai impor yang sama.
+- Tombol `?` menampilkan daftar tombol. Geser kiri/kanan di layar sentuh untuk pindah slide.
+- Sumber slide 2 dan 3 dipindah ke kiri bawah dengan lebar terbatas agar tidak tertutup dock navigasi di 1920×1080.
+- Cetak (Ctrl/Cmd+P) menghasilkan 4 halaman; diuji lewat Playwright.
+- Belum diuji di Safari: Playwright WebKit tidak terpasang di mesin ini. Perlu uji manual di Safari sebelum dikirim ke penerima.

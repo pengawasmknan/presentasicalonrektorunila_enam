@@ -30,6 +30,7 @@ export function Panggung() {
   const awal = useSlideAwal() - 1;
   const [kini, setKini] = useState(awal);
   const [catatan, setCatatan] = useState(false);
+  const [bantuan, setBantuan] = useState(false);
   const [mulai, setMulai] = useState<number | null>(null);
   const [tik, setTik] = useState(0);
 
@@ -158,6 +159,26 @@ export function Panggung() {
     return () => { window.clearTimeout(t); for (const e of ['mousemove', 'keydown', 'touchstart', 'wheel']) window.removeEventListener(e, tampil); };
   }, []);
 
+  // Geser kiri atau kanan (sentuh) untuk pindah slide. Gerak vertikal dibiarkan untuk menggulir.
+  useEffect(() => {
+    const el = akar.current;
+    if (!el) return;
+    let x0 = 0;
+    let y0 = 0;
+    const mulai = (e: TouchEvent) => { x0 = e.touches[0]?.clientX ?? 0; y0 = e.touches[0]?.clientY ?? 0; };
+    const selesai = (e: TouchEvent) => {
+      const t = e.changedTouches[0];
+      if (!t) return;
+      const dx = t.clientX - x0;
+      const dy = t.clientY - y0;
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+      kendali.current.ke(kendali.current.sekarang() + (dx < 0 ? 1 : -1));
+    };
+    el.addEventListener('touchstart', mulai, { passive: true });
+    el.addEventListener('touchend', selesai, { passive: true });
+    return () => { el.removeEventListener('touchstart', mulai); el.removeEventListener('touchend', selesai); };
+  }, []);
+
   useEffect(() => {
     const f = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLElement && ['INPUT', 'SELECT', 'TEXTAREA'].includes(e.target.tagName)) return;
@@ -171,8 +192,11 @@ export function Panggung() {
         k.ke(k.sekarang() - 1);
       } else if (e.key === 'Home') { e.preventDefault(); k.ke(0); }
       else if (e.key === 'End') { e.preventDefault(); k.ke(N - 1); }
-      else if (e.key === 'Escape') {
+      else if (e.key === '?' || (e.key === '/' && e.shiftKey)) {
+        setBantuan((v) => !v);
+      } else if (e.key === 'Escape') {
         if (document.fullscreenElement) void document.exitFullscreen();
+        setBantuan(false);
       } else if (e.key.toLowerCase() === 'f') {
         if (document.fullscreenElement) void document.exitFullscreen();
         else void document.documentElement.requestFullscreen?.();
@@ -205,9 +229,26 @@ export function Panggung() {
             <span className="pg-nomor-dock num" aria-live="polite">1 / {N}</span>
             <button type="button" onClick={() => (document.fullscreenElement ? void document.exitFullscreen() : void document.documentElement.requestFullscreen?.())}>Layar penuh (F)</button>
             <button type="button" aria-pressed={catatan} onClick={() => setCatatan((v) => !v)}>Catatan (N)</button>
+            <button type="button" aria-expanded={bantuan} aria-label="Bantuan: daftar tombol (?)" onClick={() => setBantuan((v) => !v)}>?</button>
           </nav>
         </footer>
       </main>
+
+      {bantuan && (
+        <aside className="bantuan" role="dialog" aria-label="Daftar tombol">
+          <h2>Tombol</h2>
+          <dl>
+            <dt>→ ↓ Spasi PageDown</dt><dd>Slide berikutnya (atau geser ke kiri di layar sentuh)</dd>
+            <dt>← ↑ PageUp</dt><dd>Slide sebelumnya (atau geser ke kanan)</dd>
+            <dt>Home, End</dt><dd>Slide pertama atau terakhir</dd>
+            <dt>F</dt><dd>Layar penuh</dd>
+            <dt>N</dt><dd>Catatan pembicara dan penghitung waktu</dd>
+            <dt>Esc</dt><dd>Keluar dari layar penuh atau tutup panel ini</dd>
+            <dt>?</dt><dd>Tampilkan atau sembunyikan daftar ini</dd>
+          </dl>
+          <button type="button" onClick={() => setBantuan(false)}>Tutup</button>
+        </aside>
+      )}
 
       {catatan && (
         <aside className="cp-panel" aria-label="Catatan pembicara">

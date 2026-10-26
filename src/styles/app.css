@@ -77,7 +77,7 @@ body { font-size: 15px; letter-spacing: -0.008em; -webkit-font-smoothing: antial
 .pg-logo { position: absolute; height: auto; }
 .pg-logo-u { left: 82.8%; top: 4.4%; width: 3.1%; }
 .pg-logo-d { left: 86.8%; top: 4.6%; width: 7.8%; }
-.pg-sumber { position: absolute; left: clamp(28px, 5vw, 96px); bottom: clamp(14px, 2.2vh, 26px); margin: 0; max-width: 72%; font-size: clamp(11px, 0.95vw, 17px); font-weight: 500; color: #44506e; }
+.pg-sumber { position: absolute; left: clamp(28px, 5vw, 96px); bottom: clamp(14px, 2.2vh, 26px); margin: 0; max-width: 28%; line-height: 1.3; font-size: clamp(11px, 0.95vw, 17px); font-weight: 500; color: #44506e; }
 
 /* cover: teks tambahan di kanvas px-* (cqw) */
 .px-slogan-judul { font-style: italic; color: var(--oranye); }
@@ -140,7 +140,7 @@ body { font-size: 15px; letter-spacing: -0.008em; -webkit-font-smoothing: antial
 .cp-aksi button { font-size: 13px; border: 0; background: var(--bg-alt); border-radius: 999px; padding: 5px 12px; }
 .pg-gulir.pg-catatan .pg-foot { bottom: calc(42vh + 8px); }
 @media print {
-  .cp-panel, .pg-foot, .st-petunjuk { display: none !important; }
+  .cp-panel, .pg-foot, .st-petunjuk, .bantuan { display: none !important; }
   /* Bayangan lembut dirasterkan kasar di PDF; ganti dengan cincin tipis. */
   .simpul, .simpul-m, .simpul-a, .ld-besar, .ld-misi li, .rpjp-masa { box-shadow: 0 0 0 1px rgba(30, 144, 255, 0.28) !important; }
   .simpul-m { box-shadow: none !important; }
@@ -156,3 +156,11 @@ body { font-size: 15px; letter-spacing: -0.008em; -webkit-font-smoothing: antial
   .pg-gulir .pg-slide { position: relative !important; inset: auto !important; height: 1080px; width: 1920px; opacity: 1 !important; visibility: visible !important; transform: none !important; break-after: page; overflow: hidden; }
   .pg-gulir .pg-slide:last-of-type { break-after: auto; }
 }
+
+/* panel bantuan (tombol ?) */
+.bantuan { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 9; width: min(560px, 90vw); max-height: 80vh; overflow: auto; background: #fff; color: var(--hitam, #0f0f14); border-radius: 22px; padding: clamp(18px, 3vh, 30px) clamp(20px, 3vw, 34px); box-shadow: 0 24px 60px rgba(10, 106, 214, 0.22); font-size: 16px; line-height: 1.45; }
+.bantuan h2 { margin: 0 0 12px; font-size: 22px; font-weight: 800; }
+.bantuan dl { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0 0 16px; }
+.bantuan dt { font-weight: 700; white-space: nowrap; }
+.bantuan dd { margin: 0; color: var(--text-muted); }
+.bantuan button { font: inherit; border: 0; background: var(--aksi); color: #fff; border-radius: 999px; padding: 6px 16px; cursor: pointer; }
