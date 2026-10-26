@@ -1,0 +1,156 @@
+@import './base.css';
+
+/* Token tambahan dari dashboard (gerak dan kaca). Mode Panggung selalu terang. */
+:root {
+  --ease-out-fluid: cubic-bezier(0.32, 0.72, 0, 1);
+  --kaca-isi: rgba(255, 255, 255, 0.62);
+  --kaca-garis: rgba(255, 255, 255, 0.75);
+  --kaca-bayang: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 18px 48px rgba(10, 106, 214, 0.12);
+}
+
+body { font-size: 15px; letter-spacing: -0.008em; -webkit-font-smoothing: antialiased; }
+
+.panggung {
+  --bg: #ffffff; --surface: #ffffff; --text: #1d1d1f; --text-muted: #515154; --border: #e5e5ea; --border-strong: #1d1d1f;
+  --accent: #1e90ff; --accent-ink: #0a6ad6; --bg-alt: #f5f5f7;
+  position: relative;
+  font-family: var(--font); letter-spacing: -0.01em; line-height: 1.35;
+  background: var(--bg); color: var(--text); color-scheme: light;
+}
+.panggung.pg-gulir { display: block; min-height: 0; padding: 0; gap: 0; font-size: 16px; }
+
+@media (prefers-reduced-transparency: reduce) {
+  .pg-nav { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+
+/* ---------- slide isi (2, 3, 4) ---------- */
+.pg-slide-isi { background: #fff; }
+.pg-isi {
+  position: relative; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr);
+  gap: clamp(10px, 1.8vh, 22px);
+  padding: clamp(22px, 4.2vh, 52px) clamp(28px, 5vw, 96px) clamp(50px, 7vh, 76px);
+}
+.pg-kepala { display: grid; gap: clamp(2px, 0.5vh, 6px); }
+.pg-kicker { margin: 0; font-size: clamp(12px, 1.6vh, 17px); font-weight: 600; color: var(--accent-ink); letter-spacing: 0.02em; }
+.pg-judul { margin: 0; font-size: clamp(24px, min(3.7vh, 2.6vw), 54px); line-height: 1.12; letter-spacing: -0.025em; font-weight: 700; text-wrap: balance; max-width: 30ch; }
+.pg-judul.lebar { max-width: none; }
+.pg-sub { margin: 0; font-size: clamp(14px, 2vh, 22px); color: var(--text-muted); text-wrap: pretty; }
+[data-masuk] { will-change: auto; }
+
+/* ---------- slide 2: landasan ---------- */
+.ld-badan { display: grid; grid-template-rows: auto auto auto; align-content: space-between; gap: clamp(10px, 2vh, 26px); min-height: 0; height: 100%; }
+.ld-badan .rpjp { gap: clamp(10px, 1.8vh, 20px); }
+.ld-badan .rpjp-jalur { height: clamp(30px, 4.6vh, 50px); }
+.ld-badan .rpjp-masa b { font-size: clamp(13px, 2.1vh, 22px); font-weight: 600; white-space: nowrap; }
+.ld-badan .rpjp-tahap { gap: clamp(8px, 1vw, 16px); }
+.ld-badan .rpjp-tahap li { padding: clamp(12px, 2.4vh, 28px) clamp(14px, 1.3vw, 24px); border-radius: 20px; gap: 4px; }
+.ld-badan .rpjp-tahun { font-size: clamp(13px, 2.1vh, 22px); }
+.ld-badan .rpjp-tahap b { font-size: clamp(17px, 3.1vh, 34px); }
+.ld-badan .rpjp-nama { font-size: clamp(14px, 2.3vh, 25px); line-height: 1.28; }
+.ld-badan .rpjp-ket { font-size: clamp(15px, 2.45vh, 27px); max-width: none; line-height: 1.38; text-wrap: pretty; color: var(--text); }
+.ld-visi {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(16px, 3vw, 48px);
+  background: var(--aksi); color: #fff; border-radius: clamp(20px, 3vh, 32px);
+  padding: clamp(16px, 3.4vh, 40px) clamp(22px, 2.8vw, 52px);
+}
+.ld-visi q { quotes: '“' '”'; font-size: clamp(18px, min(3.6vh, 2.2vw), 44px); line-height: 1.22; font-weight: 600; letter-spacing: -0.02em; text-wrap: balance; }
+.ld-visi p { margin: 0; font-size: clamp(15px, 2.8vh, 32px); font-weight: 700; font-style: italic; white-space: nowrap; }
+.ld-misi { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1vw, 16px); }
+.ld-misi li { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: clamp(10px, 1.1vw, 18px); padding: clamp(12px, 2.6vh, 30px) clamp(14px, 1.3vw, 24px); border-radius: 20px; background: var(--accent-soft); box-shadow: inset 0 0 0 1px rgba(30, 144, 255, 0.3); }
+.ld-misi .no { font-size: clamp(26px, 5.2vh, 58px); font-weight: 700; letter-spacing: -0.03em; color: var(--accent-ink); line-height: 1; }
+.ld-misi b { font-size: clamp(15px, 2.7vh, 30px); line-height: 1.2; font-weight: 600; text-wrap: balance; }
+
+/* ---------- slide 3: peta strategi dan program unggulan ---------- */
+.st-badan { display: grid; grid-template-rows: minmax(0, 1fr); min-height: 0; }
+.st-badan .peta-alir { display: grid; grid-template-rows: auto minmax(0, 1fr); min-height: 0; --f-prog: max(15px, min(1.146vw, 2.04vh)); }
+.st-badan .peta-kepala { grid-template-columns: var(--kol-m) var(--kol-s) var(--kol-p); font-size: clamp(12px, 1.7vh, 18px); margin-bottom: clamp(4px, 0.8vh, 10px); letter-spacing: 0.02em; }
+.st-badan .peta-kepala span:nth-child(2) { padding-left: 0; }
+.st-badan .peta-kanvas { min-height: 0; }
+.st-badan .simpul-m b { font-size: max(15px, min(1.15vw, 2.1vh)); }
+.st-badan .simpul-u b { font-size: max(14px, min(1.05vw, 1.9vh)); }
+.st-badan .simpul-a { font-size: var(--f-prog); line-height: 1.12; padding: 0 clamp(8px, 0.8vw, 14px); gap: clamp(6px, 0.7vw, 12px); border-radius: clamp(10px, 1.2vh, 14px); }
+.st-badan .simpul-a .no { font-size: var(--f-prog); font-weight: 700; }
+.st-badan .simpul-m .no { font-size: clamp(20px, 3.4vh, 38px); }
+.st-badan .simpul-u .no { font-size: clamp(16px, 2.8vh, 30px); }
+.st-badan .simpul { padding-block: 0; }
+.st-petunjuk { position: absolute; left: clamp(28px, 5vw, 96px); bottom: clamp(14px, 2.2vh, 26px); margin: 0; font-size: clamp(12px, 1.7vh, 16px); color: var(--text-muted); opacity: 0; transition: opacity 260ms var(--ease-out-fluid); pointer-events: none; }
+.pg-gulir.pg-aktif .st-petunjuk { opacity: 1; }
+.st-daftar { display: none; }
+
+/* ---------- slide 4: langkah dan angka kunci ---------- */
+.dt-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1.3fr) minmax(0, 1fr); gap: clamp(8px, 1.5vh, 18px) clamp(10px, 1.2vw, 22px); min-height: 0; }
+.dt-kartu {
+  position: relative; display: flex; flex-direction: column; gap: clamp(5px, 1.1vh, 14px); min-height: 0; overflow: hidden;
+  padding: clamp(12px, 2.2vh, 28px) clamp(16px, 1.6vw, 30px);
+  background: #fff; border-radius: clamp(16px, 2.4vh, 26px);
+  box-shadow: var(--shadow-md);
+  font-size: clamp(14px, 2.4vh, 28px); line-height: 1.3;
+}
+.dt-kartu::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: clamp(4px, 0.4vw, 8px); background: var(--accent); }
+.dt-kop { display: flex; align-items: baseline; gap: clamp(8px, 0.9vw, 16px); }
+.dt-kop .no { font-size: clamp(20px, 3.8vh, 44px); font-weight: 700; letter-spacing: -0.03em; color: var(--accent-ink); line-height: 1; }
+.dt-kop h3 { margin: 0; font-size: clamp(16px, 3vh, 34px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; text-wrap: balance; }
+.dt-angka { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0.1em 0.7em; }
+.dt-angka b { font-size: clamp(24px, min(5.6vh, 3.1vw), 70px); font-weight: 700; letter-spacing: -0.035em; color: var(--accent-ink); line-height: 1.05; }
+.dt-angka > span { font-size: 0.9em; color: var(--text-muted); }
+.dt-posisi { margin: 0; color: var(--text-muted); text-wrap: pretty; }
+.dt-poin { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(3px, 0.7vh, 9px); }
+.dt-poin li { position: relative; padding-left: 1.05em; text-wrap: pretty; }
+.dt-poin li::before { content: ''; position: absolute; left: 0; top: 0.56em; width: 0.42em; height: 0.42em; border-radius: 50%; background: var(--accent); }
+.dt-chip { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: clamp(6px, 1vh, 12px); }
+.dt-chip li { font-size: 1.12em; padding: 0.2em 0.85em; border-radius: 999px; background: var(--accent-soft); color: var(--accent-ink); font-weight: 600; box-shadow: inset 0 0 0 1px rgba(30, 144, 255, 0.28); }
+
+/* ---------- animasi masuk (hanya transform dan opacity; diatur GSAP di Panggung.tsx) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .st-petunjuk { transition: none; }
+}
+
+/* ---------- layar sempit dan mode tumpuk ---------- */
+.pg-gulir.pg-tumpuk .pg-slide-isi { height: auto; }
+.pg-gulir.pg-tumpuk .pg-isi { height: auto; min-height: 100vh; }
+@media (max-width: 860px) {
+  .st-badan .peta-alir { display: none; }
+  .st-daftar { display: block; overflow: visible; }
+  .st-daftar h3 { margin: 0 0 4px; font-size: 16px; color: var(--accent-ink); }
+  .st-daftar ul { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 4px; font-size: 14px; }
+  .st-daftar li { display: grid; grid-template-columns: 3.2em minmax(0, 1fr); gap: 6px; }
+  .st-daftar li .num { color: var(--accent-ink); font-weight: 700; }
+  .ld-visi { grid-template-columns: minmax(0, 1fr); }
+  .ld-misi { grid-template-columns: minmax(0, 1fr); }
+  .rpjp-tahap { grid-template-columns: minmax(0, 1fr); }
+  .dt-grid { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .dt-kartu { overflow: visible; }
+  .st-petunjuk { display: none; }
+  .pg-isi { padding-bottom: 76px; }
+}
+
+/* ---------- catatan pembicara dan penghitung waktu (tombol N) ---------- */
+.cp-panel {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 8; max-height: 42vh; overflow: auto;
+  background: rgba(255, 255, 255, 0.96); border-top: 1px solid var(--border);
+  padding: clamp(12px, 2vh, 22px) clamp(28px, 5vw, 96px); box-shadow: 0 -12px 40px rgba(10, 106, 214, 0.12);
+}
+.cp-kepala { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 8px; font-size: 14px; color: var(--text-muted); }
+.cp-waktu { font-size: 22px; font-weight: 700; color: var(--accent-ink); }
+.cp-waktu.lewat { color: #1d1d1f; }
+.cp-teks { margin: 0; font-size: clamp(15px, 1.5vw, 22px); line-height: 1.45; white-space: pre-line; text-wrap: pretty; max-width: 90ch; }
+.cp-aksi { display: flex; gap: 8px; }
+.cp-aksi button { font-size: 13px; border: 0; background: var(--bg-alt); border-radius: 999px; padding: 5px 12px; }
+.pg-gulir.pg-catatan .pg-foot { bottom: calc(42vh + 8px); }
+@media print {
+  .cp-panel, .pg-foot, .st-petunjuk { display: none !important; }
+  /* Bayangan lembut dirasterkan kasar di PDF; ganti dengan cincin tipis. */
+  .simpul, .simpul-m, .simpul-a, .dt-kartu, .rpjp-masa { box-shadow: 0 0 0 1px rgba(30, 144, 255, 0.28) !important; }
+  .simpul-m { box-shadow: none !important; }
+  .simpul-a, .dt-kartu { box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1) !important; }
+  .rpjp-masa { box-shadow: none !important; }
+}
+
+/* ---------- cetak (cadangan PDF): satu slide satu halaman 16:9 ---------- */
+@page { size: 1920px 1080px; margin: 0; }
+@media print {
+  html, body { background: #fff; }
+  .pg-gulir .pg-stage { height: auto !important; overflow: visible !important; }
+  .pg-gulir .pg-slide { position: relative !important; inset: auto !important; height: 1080px; width: 1920px; opacity: 1 !important; visibility: visible !important; transform: none !important; break-after: page; overflow: hidden; }
+  .pg-gulir .pg-slide:last-of-type { break-after: auto; }
+}

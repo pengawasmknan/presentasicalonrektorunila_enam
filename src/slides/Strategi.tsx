@@ -1,0 +1,35 @@
+import { MISI, PROGRAM, STRATEGI } from '../data/narasi.ts';
+import { PetaAlir } from '../components/PetaAlir.tsx';
+import { ital } from '../lib/ital.tsx';
+import { kapital, terbilang } from '../lib/terbilang.ts';
+
+export function Strategi() {
+  const judul = `${kapital(terbilang(MISI.length))} misi, ${terbilang(STRATEGI.length)} strategi, ${terbilang(PROGRAM.length)} program unggulan`;
+  return (
+    <section className="pg-slide pg-slide-isi" aria-label="Strategi dan program unggulan">
+      <div className="pg-isi">
+        <header className="pg-kepala">
+          <p className="pg-kicker" data-masuk>Strategi dan program unggulan</p>
+          <h2 className="pg-judul lebar" data-masuk>{judul}</h2>
+          <p className="pg-sub" data-masuk>Setiap program unggulan melayani satu misi dan satu strategi.</p>
+        </header>
+        <div className="st-badan" data-masuk>
+          <PetaAlir />
+          <div className="st-daftar">
+            {STRATEGI.map((s) => (
+              <div key={s.id}>
+                <h3>{s.no} {ital(s.nama)}</h3>
+                <ul>
+                  {PROGRAM.filter((p) => p.strategi === s.id).map((p) => (
+                    <li key={p.id}><span className="num">{p.id}</span><span>{ital(p.label)}</span></li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </div>
+        <p className="st-petunjuk" aria-hidden="true">Klik simpul untuk menyorot jalur</p>
+      </div>
+    </section>
+  );
+}
