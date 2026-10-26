@@ -3,6 +3,7 @@ import { MISI, PROGRAM, STRATEGI } from '../data/narasi.ts';
 import type { IdMisi, IdStrategi } from '../data/types.ts';
 import { useUkuran } from '../lib/ukuran.ts';
 import { ital } from '../lib/ital.tsx';
+import { tebal } from '../lib/tebal.tsx';
 
 /**
  * Diagram tiga kolom: empat misi, enam strategi, dan program unggulan.
@@ -86,7 +87,7 @@ export function PetaAlir() {
         {prog.map((x, i) => (
           <button key={x.id} type="button" className={`simpul simpul-a${aktif.has(x.id) ? '' : ' redup'}`} aria-pressed={pilih?.jenis === 'P' && pilih.id === x.id} style={{ top: i * pP + gapP / 2, left: xP, width: lP, height: pP - gapP }} onClick={() => alihkan('P', x.id)}>
             <span className="num no">{x.id}</span>
-            <span>{ital(x.label)}</span>
+            <span>{tebal(x.labelTebal)}</span>
           </button>
         ))}
       </div>

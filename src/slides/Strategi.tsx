@@ -1,6 +1,7 @@
 import { PROGRAM, STRATEGI } from '../data/narasi.ts';
 import { PetaAlir } from '../components/PetaAlir.tsx';
 import { ital } from '../lib/ital.tsx';
+import { tebal } from '../lib/tebal.tsx';
 import { Bingkai } from '../components/Bingkai.tsx';
 import { judulKapital, terbilang } from '../lib/terbilang.ts';
 
@@ -22,7 +23,7 @@ export function Strategi() {
                 <h3>{s.no} {ital(s.nama)}</h3>
                 <ul>
                   {PROGRAM.filter((p) => p.strategi === s.id).map((p) => (
-                    <li key={p.id}><span className="num">{p.id}</span><span>{ital(p.label)}</span></li>
+                    <li key={p.id}><span className="num">{p.id}</span><span>{tebal(p.labelTebal)}</span></li>
                   ))}
                 </ul>
               </div>

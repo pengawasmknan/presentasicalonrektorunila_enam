@@ -101,6 +101,7 @@ body { font-size: 15px; letter-spacing: -0.008em; -webkit-font-smoothing: antial
 .st-petunjuk { position: absolute; right: clamp(28px, 5vw, 96px); bottom: clamp(14px, 2.2vh, 26px); margin: 0; font-size: clamp(12px, 1.7vh, 16px); color: var(--text-muted); opacity: 0; transition: opacity 260ms var(--ease-out-fluid); pointer-events: none; }
 .pg-gulir.pg-aktif .st-petunjuk { opacity: 1; }
 .st-daftar { display: none; }
+.simpul-a .kunci, .st-daftar .kunci { font-weight: 700; color: var(--accent); }
 
 /* ---------- animasi masuk (hanya transform dan opacity; diatur GSAP di Panggung.tsx) ---------- */
 @media (prefers-reduced-motion: reduce) {

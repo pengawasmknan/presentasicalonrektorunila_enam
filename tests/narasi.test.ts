@@ -79,6 +79,9 @@ describe('teks', () => {
     const tampil = semuaTeks().filter((t) => !SLIDE.some((s) => s.catatan === t));
     for (const t of tampil) expect(t.toLowerCase()).not.toMatch(/nomor urut/);
   });
+  it('labelTebal sama dengan label setelah penanda ** dibuang', () => {
+    for (const p of PROGRAM) expect(p.labelTebal.replace(/\*\*/g, ''), p.id).toBe(p.label);
+  });
   it('label program unggulan sama dengan PPT', () => {
     expect(PROGRAM.map((p) => `${p.id} ${p.label}`)).toEqual([
       '01.1 Pengelolaan Anggaran dan Perencanaan Keuangan',

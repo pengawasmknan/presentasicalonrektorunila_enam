@@ -8,6 +8,8 @@ export interface Strategi { id: IdStrategi; no: string; nama: string }
 export interface Program {
   id: string;
   label: string;
+  /** Sama dengan `label`, dengan kata kunci diapit `**`. Kata kunci tampil tebal biru seperti di PPT. */
+  labelTebal: string;
   strategi: IdStrategi;
   misi: IdMisi;
   butir: string;
