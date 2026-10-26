@@ -81,8 +81,8 @@ body { font-size: 15px; letter-spacing: -0.008em; -webkit-font-smoothing: antial
 
 /* cover: teks tambahan di kanvas px-* (cqw) */
 .px-slogan-judul { font-style: italic; color: var(--oranye); }
-.px-visi-label { left: 8.9%; top: 44.4%; font-size: 1.74cqw; line-height: 1.2; color: #1e90ff; font-family: 'Inter', var(--font); font-weight: 700 !important; }
-.px-visi { left: 8.9%; top: 50.4%; width: 56.2%; font-size: 2.08cqw; line-height: 1.28; font-style: italic; color: #1e90ff; font-family: 'Inter', var(--font); font-weight: 700 !important; }
+.px-visi-label { left: 8.9%; top: 44.4%; font-size: 1.74cqw; line-height: 1.2; color: #1e90ff; font-family: var(--font); font-weight: 700 !important; }
+.px-visi { left: 8.9%; top: 50.4%; width: 56.2%; font-size: 2.08cqw; line-height: 1.28; font-style: italic; color: #1e90ff; font-family: var(--font); font-weight: 700 !important; }
 .pg-slide-penutup .px-slogan-besar { color: var(--oranye); }
 
 /* ---------- slide 3: peta strategi dan program unggulan ---------- */

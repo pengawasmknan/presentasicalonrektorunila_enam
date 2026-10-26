@@ -34,3 +34,7 @@ PPT ini sumber kebenaran untuk teks; web tetap berbentuk Mode Panggung. Perubaha
 - **Slide 3**: diagram tidak diubah; hanya label program unggulan (Title Case seperti PPT, termasuk kapitalisasi tidak konsisten di 02.1, 02.4, dan 05.1) dan judul ("Enam Strategi dan Tiga Belas Program Unggulan", dihitung dari data). Kicker dan label kecil memakai huruf kapital berjarak lebar. Logo Unila dan Diktisaintek di kanan atas serta baris "Rancangan Strategis Kepemimpinan Unila 2027–2031 · ..." di bawah ditambahkan di slide 2 dan 3 seperti di PPT. Subjudul "Setiap program unggulan melayani satu misi dan satu strategi" dipertahankan walau tidak ada di PPT.
 - **Font**: tetap font yang sudah dipakai (font sistem), atas arahan pemilik materi; Be Vietnam Pro tidak dipasang. Hierarki tebal dan tipis mengikuti PPT (judul dan label bobot 800, label program bobot biasa, nomor program tebal biru).
 - Latar tapis samar (opasitas 2%) di slide 2 dan 3 PPT tidak dibawa; slide web tetap putih polos.
+
+## Revisi label program unggulan (tulisan tangan Bu Anna)
+
+Label 02.2, 03.1, 04.1, 04.2, dan 05.1 diganti sesuai revisi (04.2 kini memuat RSPTN; 05.1 menyebut luaran dosen: Paten/HAKI, Jurnal, Buku, dan Pengabdian). Pemetaan misi dan strategi serta jumlah 13 tidak berubah. Rujukan font 'Be Vietnam Pro' dan 'Inter' di CSS dihapus; semua teks memakai font yang sama dengan bagian web lain. Kapitalisasi 02.1, 02.4 mengikuti PPT dan belum diseragamkan.
